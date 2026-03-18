@@ -124,6 +124,11 @@
 
 ## ⚡ Быстрый старт
 
+### 0) Что ставить (выбор сценария)
+
+- **Если роутер “чистый” / нужно с нуля**: ставь **полный образ (mtd)** из **GitHub Releases**, затем в LuCI вставь VLESS и (по желанию) правь Wi‑Fi.
+- **Если OpenWrt уже стоит и нужно просто накатить наш проект**: используй `scripts/restore.sh` (без прошивки).
+
 ### 1) Вставить VLESS (важно)
 
 В репозитории **нет** рабочих VLESS-ключей. Свою ссылку задавай в LuCI:
@@ -157,7 +162,12 @@ ROUTER_IP=192.168.23.1 SSH_PASSWORD='<router_root_password>' ./scripts/apply-fix
 
 ## 🛠 Установка и восстановление
 
+> Важно: файлы прошивок/архивов (`*.bin`, `*.tar.gz`) **не хранятся в git** (чтобы не утекли пароли/ключи из бэкапов).
+> Скачивай их из **GitHub Releases** этого репозитория.
+
 ### A. Только конфиги (sysupgrade)
+
+Используй **только если** у тебя уже стоит совместимый OpenWrt на SmartBox GIGA и нужен быстрый импорт конфигов.
 
 ```bash
 scp openwrt-Beeline-SmartBox-GIGA-sysupgrade-20260318.tar.gz root@192.168.23.1:/tmp/
@@ -165,6 +175,8 @@ ssh root@192.168.23.1 "sysupgrade -r /tmp/openwrt-Beeline-SmartBox-GIGA-sysupgra
 ```
 
 ### B. Полный образ (mtd)
+
+Это “с нуля” (самый быстрый старт, если роутер не настроен/битая система): прошиваешь полный образ из Releases, потом настраиваешь VLESS в LuCI.
 
 ```bash
 scp openwrt-beeline_smartbox-giga-mtd4-mtd6-firmware-20260318.bin root@192.168.23.1:/tmp/
@@ -177,7 +189,7 @@ mtd -r write /tmp/rootfs.bin "File System 1"
 
 ### C. Ручное восстановление (restore.sh)
 
-Требуется: OpenWrt 24.10, пакеты в `packages/*.ipk`, sshpass.
+Рекомендуемый способ для “быстрого старта” **без прошивки** (если OpenWrt уже стоит): заливает конфиги/скрипты на роутер и включает автозапуск fix.
 
 ```bash
 # macOS: brew install sshpass
