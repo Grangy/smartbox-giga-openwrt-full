@@ -1,0 +1,6 @@
+*.bin
+*.tar.gz
+*.img
+*.zip
+.DS_Store
+
