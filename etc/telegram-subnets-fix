@@ -65,6 +65,43 @@ for f in main-local-domains-ruleset.json main-telegram-ruleset.json main-tiktok-
 	[ -f /etc/podkop/rulesets/$f ] && cp -f /etc/podkop/rulesets/$f /tmp/sing-box/rulesets/$f 2>/dev/null || true
 done
 
+# 2b. Dynamic external lists (maxg.ch)
+# - fetch and generate /etc/podkop/rulesets/main-external-domains-ruleset.json
+# - copy to /tmp for sing-box
+if [ -x /usr/bin/maxg-fetch-lists ]; then
+	/usr/bin/maxg-fetch-lists >/dev/null 2>&1 || true
+fi
+[ -f /etc/podkop/rulesets/main-external-domains-ruleset.json ] && \
+	cp -f /etc/podkop/rulesets/main-external-domains-ruleset.json /tmp/sing-box/rulesets/main-external-domains-ruleset.json 2>/dev/null || true
+
+# 2c. Ensure sing-box master config references external domains ruleset (for FakeIP + routing)
+if command -v jq >/dev/null 2>&1 && [ -s /etc/sing-box/config.json.master ]; then
+	TMP="/tmp/sb-master.external.$$"
+	jq '
+		(.dns.rules) |= (
+			(if any(.[]; .action?=="route" and .server?=="fakeip-server" and (.rule_set?!=null) and (.domain?==null) and (.domain_suffix?==null) and (.domain_regex?==null) and (.domain_keyword?==null) and (.domain_contains?==null)) then
+				map(
+					if (.action?=="route" and .server?=="fakeip-server" and (.rule_set?!=null) and (.domain?==null) and (.domain_suffix?==null) and (.domain_regex?==null) and (.domain_keyword?==null) and (.domain_contains?==null)) then
+						(.rule_set |= (. + ["main-external-domains-ruleset"] | unique))
+					else . end
+				)
+			else
+				. + [{"action":"route","server":"fakeip-server","rewrite_ttl":60,"rule_set":["main-external-domains-ruleset"]}]
+			end)
+		)
+		| (.route.rules) |= map(
+			if (.action?=="route" and .inbound?=="tproxy-in" and .outbound?=="main-out" and (.rule_set?!=null)) then
+				(.rule_set |= (. + ["main-external-domains-ruleset"] | unique))
+			else . end
+		)
+		| (.route.rule_set) |= (
+			. + [{"type":"local","tag":"main-external-domains-ruleset","format":"source","path":"/tmp/sing-box/rulesets/main-external-domains-ruleset.json"}]
+			| unique_by(.tag)
+		)
+	' /etc/sing-box/config.json.master > "$TMP" 2>/dev/null && mv "$TMP" /etc/sing-box/config.json.master || true
+	[ -f "$TMP" ] && rm -f "$TMP" 2>/dev/null || true
+fi
+
 # 3. podkop_subnets
 for i in 1 2 3 4 5 6 7 8 9 10; do
 	if nft list table inet PodkopTable 2>/dev/null | grep -q podkop_subnets; then
@@ -73,5 +110,24 @@ for i in 1 2 3 4 5 6 7 8 9 10; do
 	sleep 1
 done
 
+# 3b. Add external subnets into podkop_subnets (simple integration)
+if [ -f /etc/podkop/external/subnets.txt ]; then
+	LIST="$(sed -e 's/\r$//' -e 's/[[:space:]]#.*$//' -e 's/^#.*$//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' /etc/podkop/external/subnets.txt 2>/dev/null | grep -v '^$' | tr '\n' ',' | sed 's/,$//')"
+	[ -n "$LIST" ] && nft add element inet PodkopTable podkop_subnets { $LIST } 2>/dev/null || true
+fi
+
 # 4. Restart sing-box
 [ -x /etc/init.d/sing-box ] && /etc/init.d/sing-box restart 2>/dev/null || true
+
+# 5. Final assert (podkop may reset conffile after our run)
+for i in 1 2 3 4 5; do
+	uci get sing-box.main.conffile 2>/dev/null | grep -q config.json.master && break
+	$LOG "Final assert: restoring conffile=config.json.master (attempt $i)"
+	uci set sing-box.main.conffile='/etc/sing-box/config.json.master'
+	uci set podkop.settings.config_path='/etc/sing-box/config.json'
+	uci commit sing-box
+	uci commit podkop
+	[ -x /etc/init.d/sing-box ] && /etc/init.d/sing-box restart 2>/dev/null || true
+	[ -x /etc/init.d/dnsmasq ] && /etc/init.d/dnsmasq restart 2>/dev/null || true
+	sleep 1
+done

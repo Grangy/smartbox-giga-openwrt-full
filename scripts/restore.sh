@@ -43,6 +43,7 @@ for f in main-local-domains-ruleset.json main-telegram-ruleset.json main-tiktok-
 done
 
 echo "4. telegram-subnets-fix + init + rc.local + cron"
+[ -f "$RELEASE_DIR/etc/maxg-fetch-lists" ] && cat "$RELEASE_DIR/etc/maxg-fetch-lists" | run_ssh "cat > /usr/bin/maxg-fetch-lists" && run_ssh "chmod +x /usr/bin/maxg-fetch-lists" && echo "  ✓ maxg-fetch-lists"
 [ -f "$RELEASE_DIR/etc/telegram-subnets-fix" ] && cat "$RELEASE_DIR/etc/telegram-subnets-fix" | run_ssh "cat > /usr/bin/telegram-subnets-fix" && run_ssh "chmod +x /usr/bin/telegram-subnets-fix" && echo "  ✓ telegram-subnets-fix"
 [ -f "$RELEASE_DIR/etc/init.d/telegram-subnets" ] && cat "$RELEASE_DIR/etc/init.d/telegram-subnets" | run_ssh "cat > /etc/init.d/telegram-subnets" && run_ssh "chmod +x /etc/init.d/telegram-subnets" && run_ssh "/etc/init.d/telegram-subnets enable" && echo "  ✓ telegram-subnets"
 [ -f "$RELEASE_DIR/etc/rc.local" ] && cat "$RELEASE_DIR/etc/rc.local" | run_ssh "cat > /etc/rc.local" && run_ssh "chmod +x /etc/rc.local" && echo "  ✓ rc.local"

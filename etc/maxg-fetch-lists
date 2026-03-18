@@ -1,0 +1,137 @@
+#!/bin/sh
+# Fetch dynamic external lists from maxg.ch and generate sing-box ruleset.
+# - domains.txt  -> /etc/podkop/external/domains.txt + /etc/podkop/rulesets/main-external-domains-ruleset.json
+# - subnets.txt  -> /etc/podkop/external/subnets.txt
+#
+# Requires: wget (or curl), jq
+#
+# Format:
+# - domains.txt: one domain per line, supports "*.example.com", comments "#"
+# - subnets.txt: one IPv4 CIDR per line, comments "#"
+
+set -eu
+
+LOGTAG="maxg-lists"
+log() { logger -t "$LOGTAG" "$*"; }
+
+DOMAINS_URL="${DOMAINS_URL:-https://maxg.ch/domains.txt}"
+SUBNETS_URL="${SUBNETS_URL:-https://maxg.ch/subnets.txt}"
+
+ETC_DIR="/etc/podkop/external"
+RULESET_OUT="/etc/podkop/rulesets/main-external-domains-ruleset.json"
+
+TMP_DIR="/tmp/podkop-external"
+mkdir -p "$ETC_DIR" "$TMP_DIR" /etc/podkop/rulesets 2>/dev/null || true
+
+fetch_to() {
+  url="$1"
+  out="$2"
+  if command -v wget >/dev/null 2>&1; then
+    wget -qO "$out" --timeout=10 "$url"
+    return $?
+  fi
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL --max-time 15 "$url" > "$out"
+    return $?
+  fi
+  return 127
+}
+
+normalize_domains() {
+  in="$1"
+  out="$2"
+  # strip comments, trim spaces, lowercase, remove trailing dot
+  sed -e 's/\r$//' \
+      -e 's/[[:space:]]#.*$//' \
+      -e 's/^#.*$//' \
+      -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' \
+      -e 's/\.$//' \
+      -e 's/[A-Z]/\\L&/g' "$in" \
+    | grep -v '^$' > "$out" || true
+}
+
+normalize_subnets() {
+  in="$1"
+  out="$2"
+  sed -e 's/\r$//' \
+      -e 's/[[:space:]]#.*$//' \
+      -e 's/^#.*$//' \
+      -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' "$in" \
+    | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)$/\1\/32/' \
+    | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/[0-9]+$' \
+    | grep -v '^$' > "$out" || true
+}
+
+generate_ruleset_json() {
+  domains_file="$1"
+  out_json="$2"
+
+  command -v jq >/dev/null 2>&1 || { log "jq missing, cannot generate ruleset"; return 1; }
+
+  suffixes="$TMP_DIR/suffixes.txt"
+  exact="$TMP_DIR/exact.txt"
+
+  : > "$suffixes"
+  : > "$exact"
+
+  # Split wildcard and exact
+  while IFS= read -r line; do
+    case "$line" in
+      \*.*)
+        echo "${line#*.}" >> "$suffixes"
+        ;;
+      *)
+        echo "$line" >> "$exact"
+        ;;
+    esac
+  done < "$domains_file"
+
+  sort -u "$suffixes" -o "$suffixes" 2>/dev/null || true
+  sort -u "$exact" -o "$exact" 2>/dev/null || true
+
+  # Build JSON: include only non-empty rule blocks
+  jq -n \
+    --rawfile suffixes "$suffixes" \
+    --rawfile exact "$exact" \
+    '
+    def lines($s): ($s | split("\n") | map(select(length>0)));
+    {
+      version: 3,
+      rules: (
+        []
+        + (if (lines($exact)|length)>0 then [{"domain": lines($exact)}] else [] end)
+        + (if (lines($suffixes)|length)>0 then [{"domain_suffix": lines($suffixes)}] else [] end)
+      )
+    }
+    ' > "$out_json"
+}
+
+apply() {
+  dom_raw="$TMP_DIR/domains.raw"
+  sub_raw="$TMP_DIR/subnets.raw"
+  dom_norm="$TMP_DIR/domains.txt"
+  sub_norm="$TMP_DIR/subnets.txt"
+  rules_tmp="$TMP_DIR/ruleset.json"
+
+  fetch_to "$DOMAINS_URL" "$dom_raw" || { log "Failed to fetch domains: $DOMAINS_URL"; return 1; }
+  fetch_to "$SUBNETS_URL" "$sub_raw" || { log "Failed to fetch subnets: $SUBNETS_URL"; return 1; }
+
+  normalize_domains "$dom_raw" "$dom_norm"
+  normalize_subnets "$sub_raw" "$sub_norm"
+
+  # Persist last-good lists
+  mv "$dom_norm" "$ETC_DIR/domains.txt"
+  mv "$sub_norm" "$ETC_DIR/subnets.txt"
+
+  # Generate ruleset json
+  generate_ruleset_json "$ETC_DIR/domains.txt" "$rules_tmp" || return 1
+  mv "$rules_tmp" "$RULESET_OUT"
+
+  dcount="$(wc -l < "$ETC_DIR/domains.txt" 2>/dev/null || echo 0)"
+  scount="$(wc -l < "$ETC_DIR/subnets.txt" 2>/dev/null || echo 0)"
+  log "Updated external lists: domains=$dcount, subnets=$scount"
+  return 0
+}
+
+apply
+

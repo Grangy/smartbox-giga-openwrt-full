@@ -44,7 +44,8 @@
         "rule_set": [
           "main-russia_inside-community-ruleset",
           "main-user-domains-ruleset",
-          "main-local-domains-ruleset"
+          "main-local-domains-ruleset",
+          "main-external-domains-ruleset"
         ]
       }
     ],
@@ -150,7 +151,8 @@
         "rule_set": [
           "main-russia_inside-community-ruleset",
           "main-user-domains-ruleset",
-          "main-local-domains-ruleset"
+          "main-local-domains-ruleset",
+          "main-external-domains-ruleset"
         ]
       }
     ],
@@ -173,6 +175,12 @@
         "tag": "main-local-domains-ruleset",
         "format": "source",
         "path": "/tmp/sing-box/rulesets/main-local-domains-ruleset.json"
+      },
+      {
+        "type": "local",
+        "tag": "main-external-domains-ruleset",
+        "format": "source",
+        "path": "/tmp/sing-box/rulesets/main-external-domains-ruleset.json"
       },
       {
         "type": "local",

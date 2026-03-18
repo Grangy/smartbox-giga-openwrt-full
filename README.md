@@ -38,6 +38,7 @@
 | **TikTok** | main-tiktok-ruleset → VLESS |
 | **OpenAI, GitHub, YouTube** | main-local-domains → VLESS |
 | **2ip.ru, PlayStation, EA** | VLESS |
+| **External (maxg.ch)** | domains.txt → FakeIP+VLESS, subnets.txt → podkop_subnets |
 
 ### 🔧 Технологии
 
@@ -57,6 +58,7 @@
 | `config-backup/` | Конфиги: network, firewall, wireless, dhcp, podkop, cursor.lst |
 | `etc/sing-box/` | config.json.master (полный конфиг sing-box) |
 | `etc/podkop/rulesets/` | Правила: main-local, main-telegram, main-tiktok |
+| `etc/maxg-fetch-lists` | Загрузка внешних списков `domains.txt/subnets.txt` + генерация ruleset |
 | `packages/` | .ipk: podkop, sing-box, luci-app-podkop |
 | `scripts/restore.sh` | Полное восстановление на роутер |
 | `scripts/apply-fix.sh` | Ручное применение fix (если TG/Cursor не работают) |
@@ -86,6 +88,37 @@
 - **trigger**: при изменении config podkop — fix перезапускается
 - **rc.local**: fix через 45 сек после boot
 - **cron**: `*/2 * * * *` — каждые 2 минуты
+
+---
+
+## 🌐 Динамические внешние списки (maxg.ch)
+
+Можно хранить домены/подсети во внешних файлах и менять их “на лету” без перепрошивки.
+
+### 1) Домены → FakeIP → VLESS
+
+- **Источник**: `https://maxg.ch/domains.txt`
+- **Формат**: 1 домен на строку, комментарии `#` разрешены.
+  - пример:
+    - `2ip.ru`
+    - `api.ipify.org`
+    - `example.com`
+- **Как применяется**:
+  - `/usr/bin/maxg-fetch-lists` скачивает список и генерирует ruleset `main-external-domains-ruleset`
+  - `telegram-subnets-fix` гарантирует, что `sing-box` применяет этот ruleset в DNS (FakeIP) и в маршрутизации (VLESS)
+
+### 2) Подсети → nft `podkop_subnets`
+
+- **Источник**: `https://maxg.ch/subnets.txt`
+- **Формат**: 1 CIDR на строку, комментарии `#` разрешены.
+  - пример:
+    - `203.0.113.0/24`
+    - `198.51.100.0/24`
+- **Как применяется**: `telegram-subnets-fix` добавляет элементы из `subnets.txt` в `inet PodkopTable podkop_subnets`
+
+### 3) Автообновление
+
+Списки обновляются автоматически, потому что `maxg-fetch-lists` вызывается из `telegram-subnets-fix`, а `telegram-subnets-fix` запускается через init/rc.local/cron.
 
 ---
 
