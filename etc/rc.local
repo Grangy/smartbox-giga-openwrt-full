@@ -1,0 +1,7 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+
+# Telegram + Cursor fix (45 sec after boot)
+(sleep 45 && /usr/bin/telegram-subnets-fix) &
+exit 0

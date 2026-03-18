@@ -1,0 +1,8 @@
+Beeline SmartBox GIGA — Release 2026-03-18 (финальный)
+ROUTER_IP=192.168.23.1
+MODEL=Beeline SmartBox GIGA
+
+Конфигурация:
+- sing-box: config.json.master | podkop: config.json
+- telegram-subnets-fix: init (после podkop) + rc.local 45 сек + cron */2
+- podkop перезаписывает UCI при каждом запуске — fix восстанавливает

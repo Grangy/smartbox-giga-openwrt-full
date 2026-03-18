@@ -1,0 +1,18 @@
+{
+  "version": 3,
+  "rules": [
+    {"domain_suffix": ["tiktok.com"]},
+    {"domain_suffix": ["tiktokv.com"]},
+    {"domain_suffix": ["tiktokcdn.com"]},
+    {"domain_suffix": ["tiktokcdn-us.com"]},
+    {"domain_suffix": ["tiktokcdn-eu.com"]},
+    {"domain_suffix": ["muscdn.com"]},
+    {"domain_suffix": ["byteoversea.com"]},
+    {"domain_suffix": ["ibytedtos.com"]},
+    {"domain_suffix": ["tiktokd.net"]},
+    {"domain_suffix": ["tiktokd.org"]},
+    {"domain_suffix": ["ttwstatic.com"]},
+    {"domain_suffix": ["musical.ly"]},
+    {"domain_suffix": ["tik-tokapi.com"]}
+  ]
+}

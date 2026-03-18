@@ -1,0 +1,815 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "cursor.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "www.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "api.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "api.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "api2.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "api3.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "api5.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "agent.api5.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "web.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "docs.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "docs.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "status.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "trust.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "authenticator.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "cursor.directory"
+      ]
+    },
+    {
+      "domain": [
+        "cursor.mintlify.app"
+      ]
+    },
+    {
+      "domain": [
+        "cursordocs.com"
+      ]
+    },
+    {
+      "domain": [
+        "forum.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "forum.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "changelog.cursor.com"
+      ]
+    },
+    {
+      "domain": [
+        "repo42.cursor.sh"
+      ]
+    },
+    {
+      "domain": [
+        "marketplace.cursorapi.com"
+      ]
+    },
+    {
+      "domain": [
+        "cursorapi.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "together.xyz"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "together.ai"
+      ]
+    },
+    {
+      "domain": [
+        "together.xyz"
+      ]
+    },
+    {
+      "domain": [
+        "together.ai"
+      ]
+    },
+    {
+      "domain": [
+        "api.together.xyz"
+      ]
+    },
+    {
+      "domain": [
+        "api.together.ai"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "fireworks.ai"
+      ]
+    },
+    {
+      "domain": [
+        "fireworks.ai"
+      ]
+    },
+    {
+      "domain": [
+        "api.fireworks.ai"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "baseten.co"
+      ]
+    },
+    {
+      "domain": [
+        "baseten.co"
+      ]
+    },
+    {
+      "domain": [
+        "api.baseten.co"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "x.ai"
+      ]
+    },
+    {
+      "domain": [
+        "x.ai"
+      ]
+    },
+    {
+      "domain": [
+        "api.x.ai"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "openai.com"
+      ]
+    },
+    {
+      "domain": [
+        "openai.com"
+      ]
+    },
+    {
+      "domain": [
+        "api.openai.com"
+      ]
+    },
+    {
+      "domain": [
+        "platform.openai.com"
+      ]
+    },
+    {
+      "domain": [
+        "auth0.openai.com"
+      ]
+    },
+    {
+      "domain": [
+        "cdn.oaistatic.com"
+      ]
+    },
+    {
+      "domain": [
+        "oaiusercontent.com"
+      ]
+    },
+    {
+      "domain": [
+        "openaiapi-site.azureedge.net"
+      ]
+    },
+    {
+      "domain": [
+        "chatgpt.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "anthropic.com"
+      ]
+    },
+    {
+      "domain": [
+        "anthropic.com"
+      ]
+    },
+    {
+      "domain": [
+        "api.anthropic.com"
+      ]
+    },
+    {
+      "domain": [
+        "claude.ai"
+      ]
+    },
+    {
+      "domain": [
+        "generativelanguage.googleapis.com"
+      ]
+    },
+    {
+      "domain": [
+        "ai.googleapis.com"
+      ]
+    },
+    {
+      "domain": [
+        "ai.google.dev"
+      ]
+    },
+    {
+      "domain": [
+        "generativeai.google"
+      ]
+    },
+    {
+      "domain": [
+        "aistudio.google.com"
+      ]
+    },
+    {
+      "domain": [
+        "gemini.google"
+      ]
+    },
+    {
+      "domain": [
+        "gemini.google.com"
+      ]
+    },
+    {
+      "domain": [
+        "geller-pa.googleapis.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "github.com"
+      ]
+    },
+    {
+      "domain": [
+        "github.com"
+      ]
+    },
+    {
+      "domain": [
+        "api.github.com"
+      ]
+    },
+    {
+      "domain": [
+        "raw.githubusercontent.com"
+      ]
+    },
+    {
+      "domain": [
+        "githubusercontent.com"
+      ]
+    },
+    {
+      "domain": [
+        "assets-cdn.github.com"
+      ]
+    },
+    {
+      "domain": [
+        "codeload.github.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "vercel.app"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "vercel.sh"
+      ]
+    },
+    {
+      "domain": [
+        "vercel.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "playstation.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "dl.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "update.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "sonyentertainmentnetwork.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "np.ac.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "np.dl.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "np.community.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "np.communication.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "np.matching.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "net.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "auth.np.ac.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "auth.api.np.ac.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "id.sonyentertainmentnetwork.com"
+      ]
+    },
+    {
+      "domain": [
+        "account.sonyentertainmentnetwork.com"
+      ]
+    },
+    {
+      "domain": [
+        "store.playstation.com"
+      ]
+    },
+    {
+      "domain": [
+        "poseidon.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "zeus.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "apollo.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "ares.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "video.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "comic.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "nsx.sec.np.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "nsx.np.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "us.np.stun.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "get.net.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "post.net.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "ena.net.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "control-center.rnps.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "psn-rsc.prod.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "a0.ww.np.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "a1.ww.np.dl.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "trophy01.np.community.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "static-resource.np.community.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "getprof.us.np.community.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "b5.ca.np.communication.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fus01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fuk01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "feu01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fau01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fbr01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "ftw01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fjp01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fmx01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fsa01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fru01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fkr01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fcn01.ps3.update.playstation.net"
+      ]
+    },
+    {
+      "domain": [
+        "fus01.psp2.update.playstation.net"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "ea.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "origin.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "easports.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "eamobile.com"
+      ]
+    },
+    {
+      "domain": [
+        "ea.com"
+      ]
+    },
+    {
+      "domain": [
+        "www.ea.com"
+      ]
+    },
+    {
+      "domain": [
+        "origin.com"
+      ]
+    },
+    {
+      "domain": [
+        "gcs.ea.com"
+      ]
+    },
+    {
+      "domain": [
+        "api.ea.com"
+      ]
+    },
+    {
+      "domain": [
+        "accounts.ea.com"
+      ]
+    },
+    {
+      "domain": [
+        "signin.ea.com"
+      ]
+    },
+    {
+      "domain": [
+        "store.origin.com"
+      ]
+    },
+    {
+      "domain": [
+        "store.ea.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "youtube.com"
+      ]
+    },
+    {
+      "domain": [
+        "youtube.com"
+      ]
+    },
+    {
+      "domain": [
+        "www.youtube.com"
+      ]
+    },
+    {
+      "domain": [
+        "youtubei.googleapis.com"
+      ]
+    },
+    {
+      "domain": [
+        "youtube.googleapis.com"
+      ]
+    },
+    {
+      "domain": [
+        "googlevideo.com"
+      ]
+    },
+    {
+      "domain": [
+        "ytimg.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "instagram.com"
+      ]
+    },
+    {
+      "domain": [
+        "instagram.com"
+      ]
+    },
+    {
+      "domain": [
+        "www.instagram.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "cdninstagram.com"
+      ]
+    },
+    {
+      "domain": [
+        "i.instagram.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "tiktok.com"
+      ]
+    },
+    {
+      "domain": [
+        "tiktok.com"
+      ]
+    },
+    {
+      "domain": [
+        "www.tiktok.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "tiktokv.com"
+      ]
+    },
+    {
+      "domain": [
+        "tiktokv.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "tiktokcdn.com"
+      ]
+    },
+    {
+      "domain": [
+        "tiktokcdn.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "muscdn.com"
+      ]
+    },
+    {
+      "domain": [
+        "muscdn.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "byteoversea.com"
+      ]
+    },
+    {
+      "domain": [
+        "byteoversea.com"
+      ]
+    },
+    {
+      "domain": [
+        "ibytedtos.com"
+      ]
+    },
+    {
+      "domain": [
+        "myip.com"
+      ]
+    },
+    {
+      "domain": [
+        "www.myip.com"
+      ]
+    },
+    {
+      "domain": [
+        "2ip.ru"
+      ]
+    },
+    {
+      "domain": [
+        "www.2ip.ru"
+      ]
+    }
+  ]
+}

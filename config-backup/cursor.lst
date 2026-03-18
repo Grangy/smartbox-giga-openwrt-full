@@ -1,0 +1,167 @@
+// Cursor IDE — полный список доменов для Podkop
+// Один домен на строку. Путь на роутере: /etc/podkop/cursor.lst
+// Podkop → Секции → Локальные списки доменов → /etc/podkop/cursor.lst
+
+// === Cursor (основные + поддомены) ===
+.cursor.com
+.cursor.sh
+cursor.com
+www.cursor.com
+api.cursor.com
+api.cursor.sh
+api2.cursor.sh
+api3.cursor.sh
+api5.cursor.sh
+agent.api5.cursor.sh
+web.cursor.sh
+docs.cursor.com
+docs.cursor.sh
+status.cursor.com
+trust.cursor.com
+authenticator.cursor.sh
+cursor.sh
+cursor.directory
+cursor.mintlify.app
+cursordocs.com
+forum.cursor.com
+forum.cursor.sh
+changelog.cursor.com
+repo42.cursor.sh
+marketplace.cursorapi.com
+cursorapi.com
+
+// === Together AI (инфраструктура Cursor) ===
+.together.xyz
+.together.ai
+together.xyz
+together.ai
+api.together.xyz
+api.together.ai
+
+// === Fireworks AI (инфраструктура Cursor) ===
+.fireworks.ai
+fireworks.ai
+api.fireworks.ai
+
+// === Baseten (инфраструктура Cursor) ===
+.baseten.co
+baseten.co
+api.baseten.co
+
+// === xAI / Grok (Cursor модели) ===
+.x.ai
+x.ai
+api.x.ai
+
+// === OpenAI (Cursor использует GPT) ===
+.openai.com
+openai.com
+api.openai.com
+platform.openai.com
+auth0.openai.com
+cdn.oaistatic.com
+oaiusercontent.com
+openaiapi-site.azureedge.net
+chatgpt.com
+
+// === Anthropic (Cursor использует Claude) ===
+.anthropic.com
+anthropic.com
+api.anthropic.com
+claude.ai
+
+// === Google AI (Gemini для Cursor) ===
+generativelanguage.googleapis.com
+ai.googleapis.com
+ai.google.dev
+generativeai.google
+aistudio.google.com
+gemini.google
+gemini.google.com
+geller-pa.googleapis.com
+
+// === GitHub (Cursor интеграция) ===
+.github.com
+github.com
+api.github.com
+raw.githubusercontent.com
+githubusercontent.com
+assets-cdn.github.com
+codeload.github.com
+
+// === Vercel (хостинг Cursor) ===
+.vercel.app
+.vercel.sh
+vercel.com
+
+// === PlayStation / PSN (все серверы) ===
+.playstation.net
+.playstation.com
+.dl.playstation.net
+.update.playstation.net
+.sonyentertainmentnetwork.com
+.np.ac.playstation.net
+.np.dl.playstation.net
+.np.community.playstation.net
+.np.communication.playstation.net
+.np.matching.playstation.net
+.net.playstation.net
+auth.np.ac.playstation.net
+auth.api.np.ac.playstation.net
+id.sonyentertainmentnetwork.com
+account.sonyentertainmentnetwork.com
+store.playstation.com
+poseidon.dl.playstation.net
+zeus.dl.playstation.net
+apollo.dl.playstation.net
+ares.dl.playstation.net
+video.dl.playstation.net
+comic.dl.playstation.net
+nsx.sec.np.dl.playstation.net
+nsx.np.dl.playstation.net
+us.np.stun.playstation.net
+get.net.playstation.net
+post.net.playstation.net
+ena.net.playstation.net
+control-center.rnps.dl.playstation.net
+psn-rsc.prod.dl.playstation.net
+a0.ww.np.dl.playstation.net
+a1.ww.np.dl.playstation.net
+trophy01.np.community.playstation.net
+static-resource.np.community.playstation.net
+getprof.us.np.community.playstation.net
+b5.ca.np.communication.playstation.net
+fus01.ps3.update.playstation.net
+fuk01.ps3.update.playstation.net
+feu01.ps3.update.playstation.net
+fau01.ps3.update.playstation.net
+fbr01.ps3.update.playstation.net
+ftw01.ps3.update.playstation.net
+fjp01.ps3.update.playstation.net
+fmx01.ps3.update.playstation.net
+fsa01.ps3.update.playstation.net
+fru01.ps3.update.playstation.net
+fkr01.ps3.update.playstation.net
+fcn01.ps3.update.playstation.net
+fus01.psp2.update.playstation.net
+
+// === Electronic Arts / EA / Origin ===
+.ea.com
+.origin.com
+.easports.com
+.eamobile.com
+ea.com
+www.ea.com
+origin.com
+gcs.ea.com
+api.ea.com
+accounts.ea.com
+signin.ea.com
+store.origin.com
+store.ea.com
+
+// === Проверка IP (через туннель) ===
+myip.com
+www.myip.com
+2ip.ru
+www.2ip.ru

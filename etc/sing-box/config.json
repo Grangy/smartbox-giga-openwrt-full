@@ -1,0 +1,151 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "warn",
+    "timestamp": false
+  },
+  "dns": {
+    "servers": [
+      {
+        "type": "udp",
+        "tag": "bootstrap-dns-server",
+        "server": "77.88.8.8",
+        "server_port": 53
+      },
+      {
+        "type": "udp",
+        "tag": "dns-server",
+        "server": "8.8.8.8",
+        "server_port": 53
+      },
+      {
+        "type": "fakeip",
+        "tag": "fakeip-server",
+        "inet4_range": "198.18.0.0/15"
+      }
+    ],
+    "rules": [
+      {
+        "action": "reject",
+        "query_type": "HTTPS"
+      },
+      {
+        "action": "reject",
+        "domain_suffix": "use-application-dns.net"
+      },
+      {
+        "action": "route",
+        "server": "fakeip-server",
+        "rewrite_ttl": 60,
+        "domain": [
+          "fakeip.podkop.fyi",
+          "ip.podkop.fyi"
+        ],
+        "rule_set": "main-russia_inside-community-ruleset"
+      }
+    ],
+    "final": "dns-server",
+    "strategy": "ipv4_only",
+    "independent_cache": true
+  },
+  "ntp": {},
+  "certificate": {},
+  "endpoints": [],
+  "inbounds": [
+    {
+      "type": "tproxy",
+      "tag": "tproxy-in",
+      "listen": "127.0.0.1",
+      "listen_port": 1602,
+      "tcp_fast_open": true,
+      "udp_fragment": true
+    },
+    {
+      "type": "direct",
+      "tag": "dns-in",
+      "listen": "127.0.0.42",
+      "listen_port": 53
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct-out"
+    },
+    {
+      "type": "vless",
+      "tag": "main-out",
+      "server": "138.124.241.120",
+      "server_port": 8443,
+      "uuid": "9157cdc2-2aaf-4fc6-a405-2798f4423e7f",
+      "tls": {
+        "enabled": true,
+        "server_name": "github.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "Mh9virA13VMUgx31Dey5LIDpmykBYEsAQtG3C0JH120",
+          "short_id": "2fff00569ff4c15b"
+        }
+      }
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "action": "sniff",
+        "inbound": [
+          "tproxy-in",
+          "dns-in"
+        ]
+      },
+      {
+        "action": "hijack-dns",
+        "protocol": "dns"
+      },
+      {
+        "action": "route",
+        "inbound": "tproxy-in",
+        "outbound": "main-out",
+        "domain": "ip.podkop.fyi"
+      },
+      {
+        "action": "route-options",
+        "domain": "fakeip.podkop.fyi",
+        "override_port": 8443
+      },
+      {
+        "action": "route",
+        "inbound": "tproxy-in",
+        "outbound": "main-out",
+        "rule_set": "main-russia_inside-community-ruleset"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "main-russia_inside-community-ruleset",
+        "format": "binary",
+        "url": "https://github.com/itdoginfo/allow-domains/releases/latest/download/russia_inside.srs",
+        "update_interval": "1d"
+      }
+    ],
+    "final": "direct-out",
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns-server"
+  },
+  "services": [],
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "/tmp/sing-box/cache.db",
+      "store_fakeip": true
+    },
+    "clash_api": {
+      "external_controller": "192.168.23.1:9090"
+    }
+  }
+}

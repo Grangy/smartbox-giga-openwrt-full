@@ -1,0 +1,31 @@
+#!/bin/sh
+# Telegram + Cursor fix. Podkop при КАЖДОМ запуске перезаписывает sing-box.main.conffile!
+# Запускается: init (после podkop), rc.local, cron */2.
+TELEGRAM_SUBNETS="91.105.192.0/23, 91.108.4.0/22, 91.108.8.0/21, 91.108.16.0/21, 91.108.56.0/22, 95.161.64.0/20, 149.154.160.0/20, 185.76.151.0/24"
+LOG="logger -t telegram-fix"
+
+# 1. UCI: podkop перезаписывает conffile на config_path при каждом своём запуске!
+uci get sing-box.main.conffile 2>/dev/null | grep -q config.json.master || {
+	$LOG "UCI reset by podkop, restoring conffile=config.json.master"
+	uci set sing-box.main.conffile='/etc/sing-box/config.json.master'
+	uci set podkop.settings.config_path='/etc/sing-box/config.json'
+	uci commit sing-box
+	uci commit podkop
+}
+
+# 2. Rulesets в /tmp
+mkdir -p /tmp/sing-box/rulesets 2>/dev/null || true
+for f in main-local-domains-ruleset.json main-telegram-ruleset.json main-tiktok-ruleset.json main-user-domains-ruleset.json; do
+	[ -f /etc/podkop/rulesets/$f ] && cp -f /etc/podkop/rulesets/$f /tmp/sing-box/rulesets/$f 2>/dev/null || true
+done
+
+# 3. podkop_subnets
+for i in 1 2 3 4 5 6 7 8 9 10; do
+	if nft list table inet PodkopTable 2>/dev/null | grep -q podkop_subnets; then
+		nft add element inet PodkopTable podkop_subnets { $TELEGRAM_SUBNETS } 2>/dev/null && break
+	fi
+	sleep 1
+done
+
+# 4. Restart sing-box
+[ -x /etc/init.d/sing-box ] && /etc/init.d/sing-box restart 2>/dev/null || true

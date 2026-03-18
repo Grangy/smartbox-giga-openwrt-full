@@ -1,0 +1,24 @@
+#!/bin/sh /etc/rc.common
+# Запуск ПОСЛЕ podkop. Podkop при каждом старте перезаписывает sing-box.main.conffile!
+# Запускаем fix сразу при старте и по триггеру config.change podkop.
+START=100
+STOP=10
+
+USE_PROCD=1
+
+start_service() {
+	# Запуск fix СРАЗУ (podkop уже отработал, мы START=100)
+	/usr/bin/telegram-subnets-fix
+}
+
+stop_service() {
+	return 0
+}
+
+service_triggers() {
+	# Когда podkop config меняется — podkop перезапускается и перезаписывает UCI.
+	# Триггер: перезапустить нас, чтобы fix отработал снова.
+	procd_open_trigger
+	procd_add_config_trigger "config.change" "podkop" "restart"
+	procd_close_trigger
+}
