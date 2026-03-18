@@ -1,10 +1,14 @@
 #!/bin/bash
 # Восстановление на роутер. Требует sshpass: brew install sshpass
-# ROUTER_IP=192.168.23.1 SSH_PASSWORD=REDACTED ./scripts/restore.sh
+# ROUTER_IP=192.168.23.1 SSH_PASSWORD='<router_root_password>' ./scripts/restore.sh
 
 RELEASE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ROUTER_IP="${ROUTER_IP:-192.168.23.1}"
-SSH_PASSWORD="${SSH_PASSWORD:-REDACTED}"
+SSH_PASSWORD="${SSH_PASSWORD:-}"
+if [ -z "$SSH_PASSWORD" ]; then
+  echo "ERROR: set SSH_PASSWORD env var (router root password)" >&2
+  exit 2
+fi
 
 run_ssh() { sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=accept-new "root@$ROUTER_IP" "$@"; }
 

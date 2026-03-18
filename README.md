@@ -148,13 +148,13 @@ mtd -r write /tmp/rootfs.bin "File System 1"
 
 ```bash
 # macOS: brew install sshpass
-ROUTER_IP=192.168.23.1 SSH_PASSWORD=REDACTED ./scripts/restore.sh
+ROUTER_IP=192.168.23.1 SSH_PASSWORD='<router_root_password>' ./scripts/restore.sh
 ```
 
 ### 🔄 Если Telegram/Cursor не работают
 
 ```bash
-ROUTER_IP=192.168.23.1 SSH_PASSWORD=REDACTED ./scripts/apply-fix.sh
+ROUTER_IP=192.168.23.1 SSH_PASSWORD='<router_root_password>' ./scripts/apply-fix.sh
 ```
 
 ---
@@ -165,7 +165,7 @@ ROUTER_IP=192.168.23.1 SSH_PASSWORD=REDACTED ./scripts/apply-fix.sh
 |----------|----------|
 | **LAN** | 192.168.23.1 |
 | **LuCI** | http://192.168.23.1 |
-| **SSH** | root / REDACTED |
+| **SSH** | root / `<router_root_password>` |
 
 ---
 
