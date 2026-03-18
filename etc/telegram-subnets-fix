@@ -13,6 +13,52 @@ uci get sing-box.main.conffile 2>/dev/null | grep -q config.json.master || {
 	uci commit podkop
 }
 
+# 1b. VLESS: применяем текущую ссылку из LuCI в config.json.master
+# В upstream-конфиге VLESS может быть захардкожен. Чтобы не "убивало" рабочие сервисы,
+# патчим только outbound `main-out` (vless) и НЕ трогаем uci proxy_string.
+if command -v jq >/dev/null 2>&1 && [ -s /etc/sing-box/config.json.master ]; then
+	PROXY="$(uci -q get podkop.main.proxy_string 2>/dev/null)"
+	case "$PROXY" in
+		vless://*@*:*'?'*)
+			UUID="${PROXY#vless://}"; UUID="${UUID%%@*}"
+			REST="${PROXY#vless://$UUID@}"
+			HOSTPORT="${REST%%\?*}"
+			HOST="${HOSTPORT%%:*}"
+			PORT="${HOSTPORT##*:}"
+			QS="${REST#*\?}"; QS="${QS%%#*}"
+			PBK="$(echo "$QS" | tr '&' '\n' | sed -n 's/^pbk=//p' | head -n 1)"
+			SID="$(echo "$QS" | tr '&' '\n' | sed -n 's/^sid=//p' | head -n 1)"
+			SNI="$(echo "$QS" | tr '&' '\n' | sed -n 's/^sni=//p' | head -n 1)"
+			FLOW="$(echo "$QS" | tr '&' '\n' | sed -n 's/^flow=//p' | head -n 1)"
+
+			TMP="/tmp/sb-master.$$"
+			jq \
+				--arg host "$HOST" \
+				--arg uuid "$UUID" \
+				--arg sni "$SNI" \
+				--arg pbk "$PBK" \
+				--arg sid "$SID" \
+				--arg flow "$FLOW" \
+				--argjson port "${PORT:-443}" \
+				'(.outbounds) |= map(
+					if (.tag? == "main-out" and .type? == "vless") then
+						(.server=$host) |
+						(.server_port=$port) |
+						(.uuid=$uuid) |
+						(if ($flow|length) > 0 then .flow=$flow else . end) |
+						(if (.tls.server_name? != null and ($sni|length) > 0) then .tls.server_name=$sni else . end) |
+						(if (.tls.reality.public_key? != null and ($pbk|length) > 0) then .tls.reality.public_key=$pbk else . end) |
+						(if (.tls.reality.short_id? != null and ($sid|length) > 0) then .tls.reality.short_id=$sid else . end)
+					else . end
+				)' /etc/sing-box/config.json.master > "$TMP" 2>/dev/null && {
+					mv "$TMP" /etc/sing-box/config.json.master
+					$LOG "Patched config.json.master main-out from LuCI (host=$HOST port=$PORT)"
+				}
+			[ -f "$TMP" ] && rm -f "$TMP" 2>/dev/null || true
+			;;
+	esac
+fi
+
 # 2. Rulesets в /tmp
 mkdir -p /tmp/sing-box/rulesets 2>/dev/null || true
 for f in main-local-domains-ruleset.json main-telegram-ruleset.json main-tiktok-ruleset.json main-user-domains-ruleset.json; do

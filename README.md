@@ -67,6 +67,19 @@
 - **podkop** пишет в `/etc/sing-box/config.json` (podkop перезаписывает conffile при каждом запуске)
 - **telegram-subnets-fix** восстанавливает UCI и перезапускает sing-box после каждого podkop
 
+### 🔐 Настройка VLESS (без утечек в репо)
+
+- **В репозитории нет рабочих VLESS-ключей**: в `etc/sing-box/config.json.master` и `config-backup/podkop` стоят плейсхолдеры/пустые значения.
+- **Ссылку VLESS задавайте в LuCI**: `Podkop → Основное → proxy_string` (URL вида `vless://...`).
+- При каждом запуске `telegram-subnets-fix`:
+  - **не трогает** `podkop.main.proxy_string` (то, что вы ввели в LuCI)
+  - **патчит** outbound `main-out` (VLESS) внутри `/etc/sing-box/config.json.master` под текущую ссылку (включая `flow=xtls-rprx-vision`, `pbk`, `sid`, `sni`)
+  - и перезапускает `sing-box`, чтобы он реально использовал обновлённый `config.json.master`
+
+### 🛡️ Restore без перезаписи proxy_string
+
+Скрипт `scripts/restore.sh` применяет `config-backup/podkop` **без** `proxy_string` и сохраняет текущий `podkop.main.proxy_string`, если он уже задан в системе.
+
 ### 🚀 Автозапуск fix
 
 - **init** (START=100): fix сразу после podkop

@@ -11,9 +11,25 @@ run_ssh() { sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=accept-new "
 echo "=== Восстановление на $ROUTER_IP ==="
 
 echo "1. config-backup"
-for cfg in wireless podkop network dhcp firewall sing-box; do
+# ВАЖНО: podkop применяем отдельно, чтобы не затирать proxy_string из LuCI
+for cfg in wireless network dhcp firewall sing-box; do
   [ -f "$RELEASE_DIR/config-backup/$cfg" ] && cat "$RELEASE_DIR/config-backup/$cfg" | run_ssh "cat > /etc/config/$cfg" && echo "  ✓ $cfg"
 done
+
+# Podkop: применяем БЕЗ перезаписи proxy_string (VLESS меняется в LuCI).
+# Кроме того, вырезаем proxy_string из backup-конфига, чтобы не было "дефолтного Finland".
+if [ -f "$RELEASE_DIR/config-backup/podkop" ]; then
+  cat "$RELEASE_DIR/config-backup/podkop" | run_ssh "cat > /tmp/podkop-apply" && \
+  run_ssh '
+    SAVED="$(uci get podkop.main.proxy_string 2>/dev/null)"
+    # удалить строку proxy_string из применяемого конфига
+    sed "/^[[:space:]]*option[[:space:]]\\+proxy_string[[:space:]]/d" /tmp/podkop-apply > /tmp/podkop-apply.noproxy
+    cp /tmp/podkop-apply.noproxy /etc/config/podkop
+    # восстановить текущий proxy_string (если был)
+    [ -n "$SAVED" ] && uci set podkop.main.proxy_string="$SAVED"
+    uci commit podkop
+  ' && echo "  ✓ podkop (proxy_string сохранён; backup proxy_string вырезан)"
+fi
 [ -f "$RELEASE_DIR/config-backup/cursor.lst" ] && cat "$RELEASE_DIR/config-backup/cursor.lst" | run_ssh "cat > /etc/podkop/cursor.lst" && echo "  ✓ cursor.lst"
 
 echo "2. sing-box config.json.master + UCI"

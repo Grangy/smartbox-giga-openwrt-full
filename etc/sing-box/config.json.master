@@ -79,9 +79,9 @@
     {
       "type": "vless",
       "tag": "main-out",
-      "server": "138.124.241.120",
-      "server_port": 8443,
-      "uuid": "9157cdc2-2aaf-4fc6-a405-2798f4423e7f",
+      "server": "YOUR_VLESS_HOST",
+      "server_port": 443,
+      "uuid": "YOUR_UUID",
       "tls": {
         "enabled": true,
         "server_name": "github.com",
@@ -91,8 +91,8 @@
         },
         "reality": {
           "enabled": true,
-          "public_key": "Mh9virA13VMUgx31Dey5LIDpmykBYEsAQtG3C0JH120",
-          "short_id": "2fff00569ff4c15b"
+          "public_key": "YOUR_REALITY_PUBLIC_KEY",
+          "short_id": "YOUR_SHORT_ID"
         }
       }
     },
