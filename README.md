@@ -122,6 +122,39 @@
 
 ---
 
+## ⚡ Быстрый старт
+
+### 1) Вставить VLESS (важно)
+
+В репозитории **нет** рабочих VLESS-ключей. Свою ссылку задавай в LuCI:
+
+- `Podkop → Основное → proxy_string` → вставь `vless://...` и сохрани
+
+### 2) Восстановить на роутер (restore)
+
+Требуется `sshpass` (macOS: `brew install sshpass`).
+
+```bash
+ROUTER_IP=192.168.23.1 SSH_PASSWORD='<router_root_password>' ./scripts/restore.sh
+```
+
+### 3) Если после обновления что-то не маршрутизируется
+
+```bash
+ROUTER_IP=192.168.23.1 SSH_PASSWORD='<router_root_password>' ./scripts/apply-fix.sh
+```
+
+### 4) Wi‑Fi после restore
+
+В `config-backup/wireless` стоят плейсхолдеры:
+
+- `CHANGE_ME_2.4G`, `CHANGE_ME_5G`
+- `CHANGE_ME_WIFI_PASSWORD`
+
+После восстановления задай SSID/пароль в LuCI (`Network → Wireless`) или поменяй плейсхолдеры в `config-backup/wireless` до запуска `restore.sh`.
+
+---
+
 ## 🛠 Установка и восстановление
 
 ### A. Только конфиги (sysupgrade)
